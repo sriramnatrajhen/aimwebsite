@@ -21,8 +21,57 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .main-cta {
-            @apply px-10 py-5 bg-indigo-600 text-white font-bold rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50;
+        .browser-cta {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            overflow: hidden;
+            box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
+        }
+        .browser-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+        }
+        .browser-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.15);
+        }
+        .browser-cta:active {
+            transform: translateY(0);
+        }
+        .browser-cta svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .cta-chrome {
+            background: linear-gradient(135deg, #4285F4 0%, #1A73E8 100%);
+            color: white;
+        }
+        .cta-chrome:hover {
+            background: linear-gradient(135deg, #5A95F5 0%, #2B7DE9 100%);
+        }
+        .cta-firefox {
+            background: linear-gradient(135deg, #FFA436 0%, #FF6B35 100%);
+            color: white;
+        }
+        .cta-firefox:hover {
+            background: linear-gradient(135deg, #FFB454 0%, #FF7B45 100%);
         }
         .feature-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -78,9 +127,40 @@
             <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto mb-10 reveal-element">
                 AIMetrical delivers real-time analytics and on-device security, empowering professionals to optimize productivity and protect sensitive data across every AI platform.
             </p>
-            <button id="ctaButton" class="main-cta mb-4 reveal-element">
-                Add to Chrome — It's Free
-            </button>
+            
+            <!-- Browser Extension CTAs -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6 reveal-element">
+                <a href="https://chromewebstore.google.com/detail/aimetrical/jipijjlonggfofdpaghooagodeleoglg?authuser=0&hl=en-GB" 
+                   target="_blank" 
+                   class="browser-cta cta-chrome">
+                    <svg width="24" height="24" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <circle id="a" cx="96" cy="96" r="88"/>
+                        </defs>
+                        <clipPath id="b">
+                            <use href="#a"/>
+                        </clipPath>
+                        <g clip-path="url(#b)">
+                            <path d="M8 184h83.77l38.88-38.88V116h-69.3L8 24.48z" fill="#EA4335"/>
+                            <path d="M130.65 116v29.12L184 184V24.48h-53.35z" fill="#FBBC04"/>
+                            <path d="M8 184l92-92h84L92 0H8z" fill="#34A853"/>
+                            <path d="M130.65 116L184 24.48H92L61.35 116z" fill="#4285F4"/>
+                        </g>
+                        <circle cx="96" cy="96" r="40" fill="#FFF"/>
+                        <circle cx="96" cy="96" r="32" fill="#4285F4"/>
+                    </svg>
+                    <span>Add to Chrome — It's Free</span>
+                
+                <a href="https://addons.mozilla.org/en-GB/firefox/addon/aimetrical/" 
+                   target="_blank"
+                   class="browser-cta cta-firefox">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.143 7.237c-.479-1.215-1.459-2.528-2.225-2.943.623 1.283.984 2.57 1.122 3.53l.002.02c-1.253-3.278-3.378-4.6-5.115-7.477a12.526 12.526 0 01-.26-.446 3.545 3.545 0 01-.124-.24 2.118 2.118 0 01-.164-.46.03.03 0 00-.026-.03.038.038 0 00-.02 0l-.005.001a.037.037 0 00-.01.005L16.324 0c-2.464 1.515-3.486 4.168-3.749 5.856a6.197 6.197 0 00-2.197.587.297.297 0 00-.14.37c.054.162.229.24.377.17a5.622 5.622 0 011.914-.523l.064-.005a5.847 5.847 0 011.865.222l.091.03a5.816 5.816 0 01.587.228c.076.036.152.073.227.112l.102.055a5.835 5.835 0 01.351.211 5.953 5.953 0 011.94 2.104c-.591-.437-1.652-.868-2.671-.681 3.987 2.09 2.916 9.292-2.61 9.02a5.164 5.164 0 01-1.442-.292 4.42 4.42 0 01-.513-.232c-1.354-.735-2.472-2.121-2.613-3.806 0 0 .512-2 3.665-2 .34 0 1.316-.998 1.333-1.287-.005-.095-1.935-.9-2.686-1.677-.402-.416-.593-.616-.763-.767a3.47 3.47 0 00-.287-.227 5.388 5.388 0 01-.03-2.842c-1.139.544-2.025 1.403-2.669 2.163h-.006c-.439-.584-.408-2.51-.383-2.913-.006-.025-.327.176-.371.206-.387.29-.75.616-1.083.974-.379.403-.725.839-1.034 1.303a9.816 9.816 0 00-1.49 3.52c-.003.013-.007.024-.01.037-.181.758-.267 1.55-.246 2.37.001.085.004.17.006.255.089 3.088 1.495 5.924 3.939 7.911a11.46 11.46 0 001.729 1.278c1.139.67 2.407 1.071 3.776 1.186 5.734.48 10.545-4.363 10.545-10.264 0-.048-.002-.092-.003-.14.006-.593-.063-1.186-.21-1.794z"/>
+                    </svg>
+                    <span>Add to Firefox — It's Free</span>
+                </a>
+            </div>
+            
             <div class="flex flex-col sm:flex-row justify-center gap-6 text-gray-500 text-sm md:text-base reveal-element">
                 <span class="flex items-center justify-center"><svg class="w-5 h-5 mr-2 text-indigo-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>2-minute setup</span>
                 <span class="flex items-center justify-center"><svg class="w-5 h-5 mr-2 text-indigo-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>100% privacy-focused</span>
@@ -206,12 +286,44 @@
     <section class="py-20 md:py-32 bg-gray-900 text-white text-center reveal-element">
         <div class="container mx-auto px-4 md:px-8 max-w-5xl">
             <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6">Start Optimizing Your AI Workflow Today</h2>
-            <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-8">
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-10">
                 Join professionals who are already using AIMetrical to understand their AI usage patterns, protect their sensitive data, and optimize their productivity.
             </p>
-            <button class="main-cta bg-indigo-500 hover:bg-indigo-600 text-white" onclick="showModal('Redirecting to Chrome Web Store', 'Please check your browser to confirm the installation.')">
-                Get AIMetrical for Chrome
-            </button>
+            
+            <!-- Browser Extension CTAs in Final Section -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://chromewebstore.google.com/detail/aimetrical/jipijjlonggfofdpaghooagodeleoglg?authuser=0&hl=en-GB" 
+                   target="_blank" 
+                   class="browser-cta cta-chrome">
+                    <svg width="24" height="24" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <circle id="a2" cx="96" cy="96" r="88"/>
+                        </defs>
+                        <clipPath id="b2">
+                            <use href="#a2"/>
+                        </clipPath>
+                        <g clip-path="url(#b2)">
+                            <path d="M8 184h83.77l38.88-38.88V116h-69.3L8 24.48z" fill="#EA4335"/>
+                            <path d="M130.65 116v29.12L184 184V24.48h-53.35z" fill="#FBBC04"/>
+                            <path d="M8 184l92-92h84L92 0H8z" fill="#34A853"/>
+                            <path d="M130.65 116L184 24.48H92L61.35 116z" fill="#4285F4"/>
+                        </g>
+                        <circle cx="96" cy="96" r="40" fill="#FFF"/>
+                        <circle cx="96" cy="96" r="32" fill="#4285F4"/>
+                    </svg>
+                    <span>Get AIMetrical for Chrome</span>
+                </a>
+                <a href="https://addons.mozilla.org/en-GB/firefox/addon/aimetrical/" 
+                   target="_blank"
+                   class="browser-cta cta-firefox">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.143 7.237c-.479-1.215-1.459-2.528-2.225-2.943.623 1.283.984 2.57 1.122 3.53l.002.02c-1.253-3.278-3.378-4.6-5.115-7.477a12.526 12.526 0 01-.26-.446 3.545 3.545 0 01-.124-.24 2.118 2.118 0 01-.164-.46.03.03 0 00-.026-.03.038.038 0 00-.02 0l-.005.001a.037.037 0 00-.01.005L16.324 0c-2.464 1.515-3.486 4.168-3.749 5.856a6.197 6.197 0 00-2.197.587.297.297 0 00-.14.37c.054.162.229.24.377.17a5.622 5.622 0 011.914-.523l.064-.005a5.847 5.847 0 011.865.222l.091.03a5.816 5.816 0 01.587.228c.076.036.152.073.227.112l.102.055a5.835 5.835 0 01.351.211 5.953 5.953 0 011.94 2.104c-.591-.437-1.652-.868-2.671-.681 3.987 2.09 2.916 9.292-2.61 9.02a5.164 5.164 0 01-1.442-.292 4.42 4.42 0 01-.513-.232c-1.354-.735-2.472-2.121-2.613-3.806 0 0 .512-2 3.665-2 .34 0 1.316-.998 1.333-1.287-.005-.095-1.935-.9-2.686-1.677-.402-.416-.593-.616-.763-.767a3.47 3.47 0 00-.287-.227 5.388 5.388 0 01-.03-2.842c-1.139.544-2.025 1.403-2.669 2.163h-.006c-.439-.584-.408-2.51-.383-2.913-.006-.025-.327.176-.371.206-.387.29-.75.616-1.083.974-.379.403-.725.839-1.034 1.303a9.816 9.816 0 00-1.49 3.52c-.003.013-.007.024-.01.037-.181.758-.267 1.55-.246 2.37.001.085.004.17.006.255.089 3.088 1.495 5.924 3.939 7.911a11.46 11.46 0 001.729 1.278c1.139.67 2.407 1.071 3.776 1.186 5.734.48 10.545-4.363 10.545-10.264 0-.048-.002-.092-.003-.14.006-.593-.063-1.186-.21-1.794z"/>
+                    </svg>
+                    <span>Get AIMetrical for Firefox</span>
+                </a>
+            </div>
+            
+            <p class="text-sm text-gray-500 mt-6">Available for Chrome and Firefox</p>
         </div>
     </section>
 
@@ -258,12 +370,6 @@
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         }
-
-        document.getElementById('ctaButton').addEventListener('click', function() {
-            // Replace this with your actual Chrome Web Store URL
-            // window.location.href = "YOUR_CHROME_WEB_STORE_URL";
-            showModal("Add to Chrome", "This button would redirect you to the Chrome Web Store to install the extension.");
-        });
         
         // Simple scroll-based animation trigger
         const observer = new IntersectionObserver((entries) => {
