@@ -8,54 +8,6 @@
     
     <!-- Paddle.js - Required for checkout -->
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <script>
-        // Initialize Paddle - it will auto-detect _ptxn parameter and open checkout
-        Paddle.Initialize({
-            token: 'live_c63bac01ba699d6ecdc59bbce46', // Your Paddle client token
-            checkout: {
-                settings: {
-                    displayMode: "overlay",
-                    theme: "light",
-                    locale: "en"
-                }
-            },
-            eventCallback: function(event) {
-                console.log('Paddle event:', event);
-                if (event.name === 'checkout.completed') {
-                    // Payment successful - show success message
-                    showSuccess();
-                }
-                if (event.name === 'checkout.closed') {
-                    // User closed checkout without paying
-                    document.getElementById('checkout-loading').innerHTML = `
-                        <h1>Checkout Cancelled</h1>
-                        <p class="subtitle">You closed the checkout. Click below to try again.</p>
-                        <button class="cta-button" onclick="location.reload()">Try Again</button>
-                    `;
-                }
-            }
-        });
-        
-        function showSuccess() {
-            document.getElementById('checkout-loading').style.display = 'none';
-            document.getElementById('success-content').style.display = 'block';
-        }
-        
-        // Check URL params on load
-        window.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const hasTransaction = urlParams.has('_ptxn');
-            const isSuccess = urlParams.get('success') === 'true';
-            
-            if (isSuccess) {
-                showSuccess();
-            } else if (!hasTransaction) {
-                // No transaction param - show generic success or redirect
-                showSuccess();
-            }
-            // If has _ptxn, Paddle.js automatically opens checkout overlay
-        });
-    </script>
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -223,5 +175,76 @@
             Having issues? <a href="mailto:support@aimetrical.com">Contact support</a>
         </p>
     </div>
+
+    <script>
+        // Initialize Paddle
+        Paddle.Initialize({
+            token: 'live_c63bac01ba699d6ecdc59bbce46', // Your Paddle client token
+            eventCallback: function(event) {
+                console.log('Paddle event:', event.name, event);
+                
+                if (event.name === 'checkout.completed') {
+                    // Payment successful - show success message
+                    showSuccess();
+                }
+                
+                if (event.name === 'checkout.closed') {
+                    // User closed checkout without completing
+                    var urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.has('_ptxn')) {
+                        document.getElementById('checkout-loading').innerHTML = 
+                            '<h1>Checkout Cancelled</h1>' +
+                            '<p class="subtitle">You closed the checkout. Click below to try again.</p>' +
+                            '<button class="cta-button" onclick="openCheckout()">Try Again</button>';
+                    }
+                }
+            }
+        });
+        
+        function showSuccess() {
+            document.getElementById('checkout-loading').style.display = 'none';
+            document.getElementById('success-content').style.display = 'block';
+        }
+        
+        function openCheckout() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var transactionId = urlParams.get('_ptxn');
+            
+            if (transactionId) {
+                console.log('Opening checkout for transaction:', transactionId);
+                Paddle.Checkout.open({
+                    transactionId: transactionId,
+                    settings: {
+                        displayMode: "overlay",
+                        theme: "light",
+                        locale: "en"
+                    }
+                });
+            }
+        }
+        
+        // On page load - check for transaction and open checkout
+        document.addEventListener('DOMContentLoaded', function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var transactionId = urlParams.get('_ptxn');
+            var isSuccess = urlParams.get('success') === 'true';
+            
+            console.log('Page loaded. Transaction ID:', transactionId, 'Success:', isSuccess);
+            
+            if (isSuccess) {
+                // Already completed - show success
+                showSuccess();
+            } else if (transactionId) {
+                // Has transaction - open checkout overlay
+                // Small delay to ensure Paddle.js is fully loaded
+                setTimeout(function() {
+                    openCheckout();
+                }, 500);
+            } else {
+                // No transaction param - show success (direct visit)
+                showSuccess();
+            }
+        });
+    </script>
 </body>
 </html>
